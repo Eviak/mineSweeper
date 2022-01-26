@@ -27,8 +27,13 @@ function initGame() {
     renderBoard(gLevel.SIDE_SIZE);
     gBoard[2][2].isMine = true;
     gBoard[3][3].isMine = true;
-    setMinesNegsCount(gBoard)
-    console.log(gLevel.SIDE_SIZE ** 2);
+    setMinesNegsCount(gBoard);
+    setFlagsRemainCount();
+}
+
+function setFlagsRemainCount() {
+    var elCounter = document.querySelector('.flagCounter');
+    elCounter.innerText = gLevel.MINESCOUNT - gFlagsOnBoard;
 }
 
 function resetSmiley() {
@@ -67,6 +72,7 @@ function setMinesNegsCount(board) {
 }
 
 function cellMark(elCell, i, j) {
+    if (!gGame.isOn) return;
     //toggle model isMarked
     gBoard[i][j].isMarked = !gBoard[i][j].isMarked;
 
@@ -78,6 +84,8 @@ function cellMark(elCell, i, j) {
         elCell.innerHTML = UNTOUCHED;
         gFlagsOnBoard--;
     }
+
+    setFlagsRemainCount();
 
 }
 
@@ -99,7 +107,7 @@ function cellClicked(elCell, i, j) {
         emptyCellClicked(i, j);
     }
 
-    if (gFlippedCount === gLevel.SIDE_SIZE ** 2) gameOver(true); // win
+    if (gFlippedCount === gLevel.SIDE_SIZE ** 2 - gLevel.MINESCOUNT) gameOver(true); // win
 
 }
 
@@ -109,8 +117,8 @@ function emptyCellClicked(i, j) {
             if (i + x - 1 < 0 ||
                 j + y - 1 < 0 ||
                 i + x - 1 > gBoard.length - 1 ||
-                j + y - 1 > gBoard[0].length - 1||
-                gBoard[i+x-1][j+y-1].isShown) {
+                j + y - 1 > gBoard[0].length - 1 ||
+                gBoard[i + x - 1][j + y - 1].isShown) {
                 continue
             } else {
                 if (gBoard[i - 1 + x][j - 1 + y].isMine === false) {
@@ -121,7 +129,7 @@ function emptyCellClicked(i, j) {
             }
         }
     }
-    gFlippedCount--; //offset (current cell counted already)
+    // gFlippedCount--; //offset (current cell counted already)
 
 }
 
@@ -132,8 +140,13 @@ function gameOver(isWin) {
     var elSmiley = document.querySelector('.smiley');
     console.log('game over!');
     if (isWin) elSmiley.innerHTML = COOL_SMILEY;
-    else elSmiley.innerHTML = SAD_SMILEY;
+    else {
+        elSmiley.innerHTML = SAD_SMILEY;
+        for (let i = 0; i < gLevel.SIDE_SIZE ** 2; i++) {
+            const element = array[i];
 
+        }
+    }
 }
 
 function expandShown(board, elCell, i, j) {
