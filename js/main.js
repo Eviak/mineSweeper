@@ -28,6 +28,7 @@ function initGame() {
     gBoard[2][2].isMine = true;
     gBoard[3][3].isMine = true;
     setMinesNegsCount(gBoard)
+    console.log(gLevel.SIDE_SIZE ** 2);
 }
 
 function resetSmiley() {
@@ -81,6 +82,7 @@ function cellMark(elCell, i, j) {
 }
 
 function cellClicked(elCell, i, j) {
+    if (gBoard[i][j].isShown) return;
     if (!gGame.isOn) return;
     if (gBoard[i][j].isMarked) return;
     if (gBoard[i][j].isMine) { //lost
@@ -90,12 +92,14 @@ function cellClicked(elCell, i, j) {
     }
 
     rendCell(i, j, gBoard[i][j].minesAround);
-    // gBoard[i][j].isShown = true;
+    gBoard[i][j].isShown = true;
     gFlippedCount++;
 
     if (gBoard[i][j].minesAround === 0) {
         emptyCellClicked(i, j);
     }
+
+    if (gFlippedCount === gLevel.SIDE_SIZE ** 2) gameOver(true); // win
 
 }
 
@@ -105,17 +109,19 @@ function emptyCellClicked(i, j) {
             if (i + x - 1 < 0 ||
                 j + y - 1 < 0 ||
                 i + x - 1 > gBoard.length - 1 ||
-                j + y - 1 > gBoard[0].length - 1) {
+                j + y - 1 > gBoard[0].length - 1||
+                gBoard[i+x-1][j+y-1].isShown) {
                 continue
             } else {
                 if (gBoard[i - 1 + x][j - 1 + y].isMine === false) {
                     rendCell([i - 1 + x], [j - 1 + y], gBoard[i - 1 + x][j - 1 + y].minesAround);
-                    // gBoard[i - 1 + x][j - 1 + y].isShown = true;
+                    gBoard[i - 1 + x][j - 1 + y].isShown = true;
                     gFlippedCount++;
                 }
             }
         }
     }
+    gFlippedCount--; //offset (current cell counted already)
 
 }
 
