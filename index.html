@@ -9,15 +9,19 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
-
+<body onload="initGame();">
+    <div class="smiley" onclick="initGame();"><img src="imgs/highSmile.png"></div>
+    <div class="flagCounter"></div>
     <table>
         <tbody class="board">
         </tbody>
     </table>
 
 
-    
+    <table>
+        <tbody class="checkBoard">
+        </tbody>
+    </table>
     <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
 </body>

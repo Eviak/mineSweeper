@@ -5,3 +5,11 @@ table {
     
     border-spacing: 0px;
 }
+
+.checkBoardCell {
+    border: 1px black solid;
+}
+
+.smiley :hover {
+    cursor: pointer;
+}
