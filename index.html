@@ -10,18 +10,23 @@
 </head>
 
 <body onload="initGame();">
-    <div class="smiley" onclick="initGame();"><img src="imgs/highSmile.png"></div>
-    <div class="flagCounter"></div>
-    <table>
-        <tbody class="board">
-        </tbody>
-    </table>
+    <div class="game-block">
+        <div class="smiley" onclick="initGame();"><img src="imgs/highSmile.png"></div>
+        <div class="flags">flags to use:<span class="flagCounter"></span></div>
+        <form class="difficulty">
+            <input class="difficulty3" name="chooselvl" type="radio" onclick="chooseLevel(4, 2)">
+            <input class="difficulty1" name="chooselvl" type="radio" onclick="chooseLevel(8, 12)">
+            <input class="difficulty2" name="chooselvl" type="radio" onclick="chooseLevel(12, 30)">
+        </form>
+        <table>
+            <tbody class="board">
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <span class="time">yada</span>
+    </div>
 
-
-    <table>
-        <tbody class="checkBoard">
-        </tbody>
-    </table>
     <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
 </body>

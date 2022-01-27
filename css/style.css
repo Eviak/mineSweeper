@@ -1,15 +1,41 @@
 img {
     width: 25px;
 }
+
 table {
-    
     border-spacing: 0px;
+    margin: auto;
+
 }
 
 .checkBoardCell {
     border: 1px black solid;
 }
 
+.smiley {
+
+    margin-left: 50%;
+    margin-right: auto;
+}
+
 .smiley :hover {
+    
     cursor: pointer;
+}
+
+
+.difficulty {
+    width: 300px;
+    display: inline;
+    margin: auto;
+}
+
+.flags {
+    margin-left: 38%;
+    display: inline;
+}
+
+.time {
+    margin-left: 38%;
+    margin-right: auto;
 }

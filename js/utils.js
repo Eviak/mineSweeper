@@ -63,6 +63,10 @@ function renderBoard(sideLength = 4) {
     elBoard.innerHTML = strHtml;
 }
 
+function getRndCoor(sideLength) {
+    
+}
+
 function rendCell(i, j, strHtml) {
     var elCell = document.querySelector(`.cell-${i}-${j}`);
     switch (strHtml) {
@@ -124,3 +128,9 @@ function nearBombsTestMat() {
     }
     console.table(mat);
 }
+
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+  }
