@@ -1,12 +1,27 @@
+body {
+    background-color: rgb(54, 54, 70);
+    background-image: url("../imgs/minesbg.jpg");
+    background-repeat: space;
+    background-position-x: center;
+   }
+
 img {
-    width: 25px;
+    width: 40px;
 }
 
 table {
+    display: inline-block;
     border-spacing: 0px;
     margin: auto;
 
 }
+
+.game-block {
+    margin-left:30% ;
+    margin-top: 50px;
+}
+
+
 
 .checkBoardCell {
     border: 1px black solid;
@@ -14,7 +29,7 @@ table {
 
 .smiley {
 
-    margin-left: 50%;
+    margin-left: 5%;
     margin-right: auto;
 }
 
@@ -23,19 +38,59 @@ table {
     cursor: pointer;
 }
 
-
-.difficulty {
-    width: 300px;
-    display: inline;
-    margin: auto;
+.difficultyForm {
+    border: black 1px solid;
+    background-color: rgba(0, 0, 0, 0.66);
+    display: inline-block;
 }
+
+
+.difficultyText {
+    margin-left: 10px;
+    display: inline;
+    color: chocolate;
+    font: bold 20px Arial, sans-serif;
+}
+
 
 .flags {
-    margin-left: 38%;
+    border: black 1px solid;
+    background-color: rgba(0, 0, 0, 0.66);
+    font: bold 20px Arial, sans-serif;
+    color: rgb(180, 24, 24);
     display: inline;
 }
 
-.time {
-    margin-left: 38%;
+.time-box {
+    border: black 1px solid;
+    background-color: rgba(0, 0, 0, 0.66);
+    color: chartreuse;
+    font: bold 20px Arial, sans-serif;
+    margin-left: 7.5%;
     margin-right: auto;
+}
+
+.lives-left {
+    border: black 1px solid;
+    background-color: rgba(0, 0, 0, 0.66);
+    font: bold 20px Arial, sans-serif;
+    color: rgb(221, 166, 48);
+    display: inline-block;
+}
+
+.hint-button {
+    display: inline-block;
+}
+
+.hint-img {
+    height: 60px;
+    width: 60px;
+}
+
+.hint-text {
+    border: black 1px solid;
+    background-color: rgba(0, 0, 0, 0.66);
+    font: bold 20px Arial, sans-serif;
+    color: rgb(64, 218, 230);
+    display: inline-block;
 }

@@ -54,7 +54,7 @@ function renderBoard(sideLength = 4) {
         strHtml += '<tr>';
         for (let j = 0; j < sideLength; j++) {
             strHtml += `<td oncontextmenu="cellMark(this,${i},${j}); return false;" 
-                        onclick = "cellClicked(this,${i},${j})"
+                        onclick = "cellClicked(${i},${j})"
                         class = "cell-${i}-${j}">${UNTOUCHED}</td>`
         }
         strHtml += '</tr>';
@@ -100,6 +100,12 @@ function rendCell(i, j, strHtml) {
         case 'mine':
             elCell.innerHTML = MINE;
             break;
+        case 'untouched':
+            elCell.innerHTML = UNTOUCHED;
+            break;
+        case 'flag':
+            elCell.innerHTML = FLAG;
+            break;
     
         default:
             break;
@@ -133,4 +139,9 @@ function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+  }
+
+ function rendLives () {
+      var elLivesCount = document.querySelector('.lives');
+      elLivesCount.innerText = gGame.lives;
   }

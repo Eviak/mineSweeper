@@ -13,19 +13,26 @@
     <div class="game-block">
         <div class="smiley" onclick="initGame();"><img src="imgs/highSmile.png"></div>
         <div class="flags">flags to use:<span class="flagCounter"></span></div>
-        <form class="difficulty">
-            <input class="difficulty3" name="chooselvl" type="radio" onclick="chooseLevel(4, 2)">
-            <input class="difficulty1" name="chooselvl" type="radio" onclick="chooseLevel(8, 12)">
-            <input class="difficulty2" name="chooselvl" type="radio" onclick="chooseLevel(12, 30)">
-        </form>
-        <table>
+        <span class="time-box">Time: <span class="time">0</span></br></span>
+        <form class="difficultyForm">
+            <span class="difficultyText">Difficulty:</span>
+            <span class="difficultyText">Easy</span><input checked="checked" class="difficulty" name="chooselvl" type="radio" onclick="chooseLevel(4, 2)">
+            <span class="difficultyText">Medium</span><input class="difficulty" name="chooselvl" type="radio" onclick="chooseLevel(8, 12)">
+            <span class="difficultyText">Hard</span><input class="difficulty" name="chooselvl" type="radio" onclick="chooseLevel(12, 30)">
+        </form></br>
+        <div class = "lives-left">Lives left:<span class="lives"></span></div></br>
+
+
+        <table class="gameBoard">
             <tbody class="board">
             </tbody>
         </table>
+        <div class="hint-text">Hints:</div>
+        <div class="hint-button" onclick="turnHintOn (this)"><img class="hint-img" src="imgs/hint.jpg"></div>
+        <div class="hint-button" onclick="turnHintOn (this)"><img class="hint-img" src="imgs/hint.jpg"></div>
+        <div class="hint-button" onclick="turnHintOn (this)"><img class="hint-img" src="imgs/hint.jpg"></div>
     </div>
-    <div>
-        <span class="time">yada</span>
-    </div>
+
 
     <script src="js/utils.js"></script>
     <script src="js/main.js"></script>

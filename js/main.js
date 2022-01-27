@@ -1,7 +1,7 @@
 'use strict'
 
 var gLevel = {
-    SIDE_SIZE: 9,
+    SIDE_SIZE: 4,
     MINESCOUNT: 2,
 }
 
@@ -9,8 +9,11 @@ var gGame = {
     isOn: false,
     shownCount: 0,
     markedCount: 0,
-    secsPassed: 0,
+    hintsLeft: 3,
+    lives: 3,
+    isHintOn: false,
 }
+
 
 var gWatchInterval;
 var gStartTime;
@@ -21,13 +24,35 @@ var gFlagsOnBoard = 0;
 var gBoard;
 
 
+
 function initGame() {
+    resetHintButton();
+    endStopWatch();
     resetGlobals();
     resetSmiley();
+    rendLives();
     renderBoard(gLevel.SIDE_SIZE);
     setBombsOnBoard();
     setMinesNegsCount(gBoard);
     setFlagsRemainCount();
+}
+
+function resetGlobals() {
+    gFlippedCount = 0;
+    gFlagsOnBoard = 0;
+    gGame.lives = 3;
+    gGame.isOn = true;
+    gGame.hintsLeft = 3;
+    gBoard = [];
+    gBoard = createMat(gLevel.SIDE_SIZE);
+    gGame.isHintOn = false;
+}
+
+function rearrangeBoard() {
+    gBoard = [];
+    gBoard = createMat(gLevel.SIDE_SIZE);
+    setBombsOnBoard();
+    setMinesNegsCount(gBoard);
 }
 
 function setBombsOnBoard() {
@@ -58,13 +83,6 @@ function resetSmiley() {
     elSmiley.innerHTML = SMILEY;
 }
 
-function resetGlobals() {
-    gFlippedCount = 0;
-    gFlagsOnBoard = 0;
-    gGame.isOn = true;
-    gBoard = [];
-    gBoard = createMat(gLevel.SIDE_SIZE);
-}
 
 function setMinesNegsCount(board) {
     for (let i = 0; i < board.length; i++) {
@@ -90,6 +108,7 @@ function setMinesNegsCount(board) {
 
 function cellMark(elCell, i, j) {
     if (!gGame.isOn) return;
+    if (gBoard[i][j].isShown) return;
     //toggle model isMarked
     gBoard[i][j].isMarked = !gBoard[i][j].isMarked;
 
@@ -106,14 +125,24 @@ function cellMark(elCell, i, j) {
 
 }
 
-function cellClicked(elCell, i, j) {
-    if (gBoard[i][j].isShown) return;
+function cellClicked(i, j) {
     if (!gGame.isOn) return;
-    if (gFlippedCount<1) startStopWatch();
+    if (gBoard[i][j].isShown) return;
+    if (gGame.isHintOn) {
+        hintClick(i, j);
+        return;
+    }
+
+    if (gFlippedCount < 1) { //first click of the game
+        while (gBoard[i][j].isMine) {
+            rearrangeBoard();
+        }
+        startStopWatch();
+    }
+
     if (gBoard[i][j].isMarked) return;
-    if (gBoard[i][j].isMine) { //lost
-        rendCell(i, j, 'mine');
-        gameOver(false);
+    if (gBoard[i][j].isMine) {
+        mineClicked(i, j);
         return;
     }
     rendCell(i, j, gBoard[i][j].minesAround);
@@ -127,6 +156,58 @@ function cellClicked(elCell, i, j) {
     if (gFlippedCount === gLevel.SIDE_SIZE ** 2 - gLevel.MINESCOUNT) gameOver(true); // win
 
 }
+
+function turnHintOn(elHintButton) {
+    gGame.isHintOn = true;
+    elHintButton.innerHTML = '';
+}
+
+function resetHintButton() {
+    var elHintButtons = document.querySelectorAll('.hint-button');
+    for (let i = 0; i < 3; i++) {
+        elHintButtons[i].innerHTML = '<img class="hint-img" src="imgs/hint.jpg"></img>';
+    }
+}
+
+function hintClick(i, j) {
+    var areMarked = [];
+    var areShown = [];
+    var counter = 0;
+    for (let x = 0; x < 3; x++) {
+        for (let y = 0; y < 3; y++) {
+            rendCell(i - 1 + x, j - 1 + y, gBoard[i - 1 + x][j - 1 + y].minesAround);
+            if (gBoard[i - 1 + x][j - 1 + y].isShown) {
+                areShown.push(true);
+                areMarked.push(false);
+            } else if (gBoard[i - 1 + x][j - 1 + y].isMarked) {
+                areShown.push(false);
+                areMarked.push(true);
+
+            } else if (gBoard[i - 1 + x][j - 1 + y].isMine) {
+                rendCell(i - 1 + x, j - 1 + y, 'mine');
+                areShown.push(false);
+                areMarked.push(false);
+            } else {
+                rendCell(i - 1 + x, j - 1 + y, gBoard[i - 1 + x][j - 1 + y]);
+                areShown.push(false);
+                areMarked.push(false);
+            }
+        }
+    }
+
+    setTimeout(() => {
+        console.log('hi');
+        for (let x = 0; x < 3; x++) {
+            for (let y = 0; y < 3; y++) {
+                if (!areShown[counter]) rendCell(i - 1 + x, j - 1 + y, 'untouched');
+                if (areMarked[counter]) rendCell(i - 1 + x, j - 1 + y, 'flag');
+                counter++;
+            }
+        }
+        gGame.isHintOn = false;
+    }, 1000);
+}
+
 
 function emptyCellClicked(i, j) {
     for (let x = 0; x < 3; x++) {
@@ -151,7 +232,14 @@ function emptyCellClicked(i, j) {
 
 }
 
-
+function mineClicked(i, j) {
+    gGame.lives--;
+    if (gGame.lives === 0) {
+        rendCell(i, j, 'mine');
+        gameOver(false);
+    }
+    rendLives();
+}
 
 function gameOver(isWin) {
     gGame.isOn = false;
@@ -182,7 +270,7 @@ function updateWatch() {
     var time = Math.abs(((now - gStartTime) / 1000).toFixed(0))
     var elTime = document.querySelector('.time')
     elTime.innerText = time
-  }
+}
 
 function endStopWatch() {
     clearInterval(gWatchInterval)
